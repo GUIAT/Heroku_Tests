@@ -7,6 +7,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE1_URL','sqlite:/
 
 db = SQLAlchemy(app)
 
+@app.before_first_request
+def create tables():
+    db.create_all()
+
 class students(db.Model):
     id = db.Column('student_id', db.Integer, primary_key = True)
     name = db.Column(db.String(100))
@@ -31,5 +35,4 @@ def new():
 
 
 if __name__ == '__main__':
-    db.create_all()
     app.run(port=5000)
