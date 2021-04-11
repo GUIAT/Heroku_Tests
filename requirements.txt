@@ -1,4 +1,4 @@
 Flask
-Flask_SQLalchemy
+Flask_SQLAlchemy
 uwsgi
 psycopg2
