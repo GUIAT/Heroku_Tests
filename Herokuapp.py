@@ -8,7 +8,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE1_URL','sqlite:/
 db = SQLAlchemy(app)
 
 @app.before_first_request
-def create tables():
+def create_tables():
     db.create_all()
 
 class students(db.Model):
