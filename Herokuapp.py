@@ -1,6 +1,6 @@
 from flask import Flask, request,  jsonify, abort
 from flask_restful import reqparse
-import os
+import os, json
 from flask_sqlalchemy import SQLAlchemy
 #import hmac
 #from hashlib import sha1
@@ -72,11 +72,9 @@ def getVerificationIG():
 
 
     if request.method == 'POST':
-        data = request.data
-        theEntry = received_data['field']
-        theObject = received_data['value']
-        received_updates.append(theEntry) 
-        received_updates.append(theObject)
+        data = request.json
+        received_updates.append(data) 
+        
 
         #db.session.add(theObject, theEntry)
         #db.session.commit() 
