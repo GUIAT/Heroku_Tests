@@ -29,7 +29,7 @@ def getVerificationFB():
     parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
     parser.add_argument('entry')
     received_data = parser.parse_args()
-
+    
     if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
         return (str(received_data['hub.challenge']))
 
@@ -45,7 +45,7 @@ def getVerificationIG():
     received_data = parser.parse_args()
 
     if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
-        return int(received_data['hub.challenge'])
+        return (str(received_data['hub.challenge']))
 
     return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
 
