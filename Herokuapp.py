@@ -50,19 +50,11 @@ def getVerificationIG():
     return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
 
 
-@app.route('/facebook', methods = ['POST'])
-def getVerification():
-    parser = reqparse.RequestParser()
-    parser.add_argument('hub.mode')
-    parser.add_argument('hub.challenge')
-    parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
-    parser.add_argument('entry')
-    received_data = parser.parse_args()
-
-    if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
-        return int(received_data['hub.challenge'])
-
-    return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
+@app.route('/instagram', methods = ['POST'])
+def pushData():
+    data = request.data
+    received_updates.append(data)
+    return ('All Good')
 
 
 if __name__ == '__main__':
