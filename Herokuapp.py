@@ -1,11 +1,28 @@
 from flask import Flask, request,  jsonify, abort
 from flask_restful import reqparse
 import os
+from flask_sqlalchemy import SQLAlchemy
 #import hmac
 #from hashlib import sha1
 #from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE1_URL','sqlite:///students.sqlite3') # Dataase URI, get in HEROKU
+
+db = SQLAlchemy(app)
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+class storyInsights(db.Model):
+    id = db.Column('Index_Id', db.Integer, primary_key = True)
+    firstTheObject = db.Column(db.String(10000))
+    secondTheObject = db.Column(db.String(10000))
+
+    def __init__(self, firstTheObject, secondTheObject):
+        self.firstTheObject = firstTheObject
+        self.secondTheObject = secondTheObject
 
 # ------------------------LINES 9 /18 == ?
 
@@ -53,7 +70,13 @@ def getVerificationIG():
 @app.route('/instagram', methods = ['POST'])
 def pushData():
     data = request.data
+    theObject = request.form['object']
+    theEntry = request.form['entry']
     received_updates.append(data)
+
+    db.session.add(theObject, theEntry)
+    db.session.commit() 
+    
     return ('All Good')
 
 
