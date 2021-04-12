@@ -73,7 +73,8 @@ def getVerificationIG():
 
     if request.method == 'POST':
         data = request.json
-        received_updates.append(data) 
+        theObject = data['object']
+        received_updates.append(theObject) 
         
 
         #db.session.add(theObject, theEntry)
