@@ -1,38 +1,69 @@
+from flask import Flask, request,  jsonify, abort
+from flask_restful import reqparse
 import os
-from flask import Flask, request, render_template, url_for, redirect
-from flask_sqlalchemy import SQLAlchemy
+#import hmac
+#from hashlib import sha1
+#from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE1_URL','sqlite:///students.sqlite3') # Dataase URI, get in HEROKU
 
-db = SQLAlchemy(app)
+# ------------------------LINES 9 /18 == ?
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# ------------------------LINES 20 /21 == OK ?
+testToken = 12345
+token = os.environ.get('TOKEN', testToken)                          #DELETE ONCE DONE / We will use CONFIG VARS from Heroku once done      
+#token = str(environ.get("TOKEN")) or 'token'        PUT BACK ONCE DONE/ CHEKC IF THIS WORKS IN HEROKU /make sure this is a striiiinngggg
+received_updates = []
 
-class students(db.Model):
-    id = db.Column('student_id', db.Integer, primary_key = True)
-    name = db.Column(db.String(100))
+# ------------------------LINES 23 /26 == OK ?
+@app.route('/', methods = ['GET'])
+def home():
+    return str(received_updates) #STRINGIFY?
 
-    def __init__(self, name):
-        self.name = name
-        
-@app.route('/')
-def show_all():
-    return render_template('show_all.html', students = students.query.all())
+# ------------------------LINES 28 /37 
+@app.route('/facebook', methods = ['GET'])
+def getVerificationFB():
+    parser = reqparse.RequestParser()
+    parser.add_argument('hub.mode')
+    parser.add_argument('hub.challenge')
+    parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
+    parser.add_argument('entry')
+    received_data = parser.parse_args()
 
-@app.route('/form', methods = ['GET', 'POST'])
-def new():
-    if request.method == 'POST':
-        student = students(request.form['name'])
+    if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
+        return int(received_data['hub.challenge'])
 
-        db.session.add(student)
-        db.session.commit() 
-        return redirect(url_for('show_all'))
+    return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
 
-    return render_template('new.html')
+@app.route('/instagram', methods = ['GET'])
+def getVerificationIG():
+    parser = reqparse.RequestParser()
+    parser.add_argument('hub.mode')
+    parser.add_argument('hub.challenge')
+    parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
+    parser.add_argument('entry')
+    received_data = parser.parse_args()
+
+    if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
+        return int(received_data['hub.challenge'])
+
+    return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
+
+
+@app.route('/facebook', methods = ['POST'])
+def getVerification():
+    parser = reqparse.RequestParser()
+    parser.add_argument('hub.mode')
+    parser.add_argument('hub.challenge')
+    parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
+    parser.add_argument('entry')
+    received_data = parser.parse_args()
+
+    if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
+        return int(received_data['hub.challenge'])
+
+    return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(debug=True, port=5000)
