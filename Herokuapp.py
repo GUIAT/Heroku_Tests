@@ -17,12 +17,13 @@ def create_tables():
 
 class storyInsights(db.Model):
     id = db.Column('Index_Id', db.Integer, primary_key = True)
-    firstTheObject = db.Column(db.String(10000))
-    secondTheObject = db.Column(db.String(10000))
-
-    def __init__(self, firstTheObject, secondTheObject):
-        self.firstTheObject = firstTheObject
-        self.secondTheObject = secondTheObject
+    theObject = db.Column(db.String(500))
+    theEntry = db.Column(db.String(500))
+    
+    def __init__(self, theObject, theEntry):
+        self.theObject = theObject
+        self.theEntry = theEntry
+    
 
 # ------------------------LINES 9 /18 == ?
 
@@ -58,6 +59,7 @@ def getVerificationIG():
     parser.add_argument('hub.mode')
     parser.add_argument('hub.challenge')
     parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
+    parser.add_argument('object')
     parser.add_argument('entry')
     received_data = parser.parse_args()
 
@@ -70,8 +72,8 @@ def getVerificationIG():
 @app.route('/instagram', methods = ['POST'])
 def pushData():
     data = request.data
-    theObject = request.form['object']
-    theEntry = request.form['entry']
+    theObject = received_data['object']
+    theEntry = received_data['entry']
     received_updates.append(data)
 
     db.session.add(theObject, theEntry)
