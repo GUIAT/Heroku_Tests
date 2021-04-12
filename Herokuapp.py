@@ -59,8 +59,8 @@ def getVerificationIG():
     parser.add_argument('hub.mode')
     parser.add_argument('hub.challenge')
     parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
-    parser.add_argument('object')
     parser.add_argument('field')
+    parser.add_argument('value')
     received_data = parser.parse_args()
 
     if request.method == 'GET':
@@ -74,12 +74,14 @@ def getVerificationIG():
     if request.method == 'POST':
         data = request.data
         theEntry = received_data['field']
-        received_updates.append(data)
+        theObject = received_data['value']
+        received_updates.append(theEntry) 
+        received_updates.append(theObject)
 
         #db.session.add(theObject, theEntry)
         #db.session.commit() 
     
-        return (str(theEntry))
+        return ('200')
 '''
 @app.route('/instagram', methods = ['POST'])
 def pushData():
