@@ -31,7 +31,7 @@ def getVerificationFB():
     received_data = parser.parse_args()
 
     if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
-        return int(received_data['hub.challenge'])
+        return (received_data['hub.challenge'],)
 
     return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
 
