@@ -74,8 +74,8 @@ def getVerificationIG():
     if request.method == 'POST':
         data = request.json
         theObject = data['object']
-        theEntry = data['entry']
-        sendtoDatabase = storyInsights(theObject, theEntry)
+        theEntry = data['entry'].apply(json.dumps)
+        senddtoDatabase = storyInsights(theObject, theEntry)
         received_updates.append(theObject) 
         
 
