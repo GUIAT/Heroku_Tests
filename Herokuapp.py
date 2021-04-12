@@ -53,22 +53,34 @@ def getVerificationFB():
 
     return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
 
-@app.route('/instagram', methods = ['GET'])
+@app.route('/instagram', methods = ['GET', 'POST'])
 def getVerificationIG():
     parser = reqparse.RequestParser()
     parser.add_argument('hub.mode')
     parser.add_argument('hub.challenge')
     parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
     parser.add_argument('object')
-    parser.add_argument('entry')
+    parser.add_argument('field')
     received_data = parser.parse_args()
 
-    if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
-        return (str(received_data['hub.challenge']))
+    if request.method == 'GET':
 
-    return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
+        if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
+            return (str(received_data['hub.challenge']))
+
+        return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
 
 
+    if request.method == 'POST':
+        data = request.data
+        theEntry = received_data['field']
+        received_updates.append(data)
+
+        #db.session.add(theObject, theEntry)
+        #db.session.commit() 
+    
+        return (str(theEntry))
+'''
 @app.route('/instagram', methods = ['POST'])
 def pushData():
     data = request.data
@@ -80,7 +92,7 @@ def pushData():
     db.session.commit() 
     
     return ('All Good')
-
+'''
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
