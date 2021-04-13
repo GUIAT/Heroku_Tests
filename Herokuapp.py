@@ -17,7 +17,7 @@ def create_tables():
 
 class storyInsights(db.Model):
 
-    __tablename__="StoryInsights"
+    __tablename__="story_insights"
     id = db.Column('Index_Id', db.Integer, primary_key = True)
     responseJsonObject = db.Column(db.String(30))
     responseJsonEntry = db.Column(db.String(500))
@@ -83,7 +83,7 @@ def getVerificationIG():
         
         received_updates.append(responseJsonEntry) 
 
-        sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry) #responseJsonObject,
+        sendtoDatabase = story_insights(responseJsonObject, responseJsonEntry) #responseJsonObject,
          
         db.session.add(sendtoDatabase)
         db.session.commit() 
