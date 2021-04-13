@@ -36,8 +36,8 @@ received_updates = []
 # ------------------------LINES 23 /26 == OK ?
 @app.route('/', methods = ['GET'])
 def home():
-    return str(received_updates) #STRINGIFY?
-    #return (render_template('show_all.html', storyInsights = storyInsights.query.all()))
+    #return str(received_updates) #STRINGIFY?
+    return (render_template('show_all.html', storyInsights = storyInsights.query.all()))
 
 # ------------------------LINES 28 /37 
 @app.route('/facebook', methods = ['GET'])
@@ -83,8 +83,8 @@ def getVerificationIG():
 
         sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry)
         
-        #db.session.add(senddtoDatabase)
-        #db.session.commit() 
+        db.session.add(senddtoDatabase)
+        db.session.commit() 
     
         return ('200')
 '''
