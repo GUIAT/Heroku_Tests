@@ -60,8 +60,8 @@ def getVerificationIG():
     parser.add_argument('hub.mode')
     parser.add_argument('hub.challenge')
     parser.add_argument('hub.verify_token') #, location='form' does not workcd ..
-    parser.add_argument('field')
-    parser.add_argument('value')
+    parser.add_argument('object')
+    parser.add_argument('envy')
     received_data = parser.parse_args()
 
     if request.method == 'GET':
@@ -73,15 +73,15 @@ def getVerificationIG():
 
 
     if request.method == 'POST':
-        data = request.json()
+        #data = request.json
+        data = request.form['object']
         #responseJsonObject = data['object']
         #responseJsonEntry = data['entry'] #SQL doesnt't accept dict -MUST CONVERT (with everything after the dot bug on sqlalchemy side /with error 500)
         
         #print(responseJsonEntry)
-        senddtoDatabase = storyInsights(theObject, theEntry)
+        #senddtoDatabase = storyInsights(theObject, theEntry)
         received_updates.append(data) 
         
-
         #db.session.add(theObject)
         #db.session.commit() 
     
