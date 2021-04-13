@@ -16,11 +16,11 @@ class storyInsights(db.Model):
     __tablename__="story_insights"
     id = db.Column(db.Integer, primary_key = True)
     responseJsonObject = db.Column(db.String(30))
-    #responseJsonEntry = db.Column(db.String(500))
+    responseJsonEntry = db.Column(db.String(500))
     
-    def __init__(self, responseJsonObject): #,responseJsonEntry
+    def __init__(self, responseJsonObject,responseJsonEntry): 
         self.responseJsonObject = responseJsonObject
-       # self.responseJsonEntry = responseJsonEntry
+        self.responseJsonEntry = responseJsonEntry
     
 
 @app.before_first_request
@@ -82,7 +82,7 @@ def getVerificationIG():
         
         received_updates.append(responseJsonEntry) 
 
-        sendtoDatabase = storyInsights(responseJsonObject) #responseJsonObject,
+        sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry) 
          
         db.session.add(sendtoDatabase)
         db.session.commit() 
