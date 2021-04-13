@@ -76,10 +76,10 @@ def getVerificationIG():
         #data = request.json
         data = request.get_json()
 
-        responseJsonObject = data['object']
-        responseJsonEntry = data['entry'] #SQL doesnt't accept dict -MUST CONVERT (with everything after the dot bug on sqlalchemy side /with error 500)
+        responseJsonObject = str(data['object'])
+        responseJsonEntry = str(data['entry'])
         
-        received_updates.append(str(responseJsonObject)+'!!!!!'+str(responseJsonEntry)) 
+        received_updates.append(responseJsonEntry) 
 
         sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry)
         
