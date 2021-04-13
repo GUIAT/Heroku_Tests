@@ -74,7 +74,7 @@ def getVerificationIG():
 
     if request.method == 'POST':
         #data = request.json
-        data = request.data
+        data = jsonify(request.get_json(force=True))
         #responseJsonObject = data['object']
         #responseJsonEntry = data['entry'] #SQL doesnt't accept dict -MUST CONVERT (with everything after the dot bug on sqlalchemy side /with error 500)
         
