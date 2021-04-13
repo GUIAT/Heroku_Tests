@@ -16,6 +16,8 @@ def create_tables():
     db.create_all()
 
 class storyInsights(db.Model):
+
+    __tablename__="StoryInsights"
     id = db.Column('Index_Id', db.Integer, primary_key = True)
     responseJsonObject = db.Column(db.String(30))
     responseJsonEntry = db.Column(db.String(500))
@@ -74,7 +76,6 @@ def getVerificationIG():
 
 
     if request.method == 'POST':
-        #data = request.json
         data = request.get_json()
 
         responseJsonObject = str(data['object'])
@@ -88,19 +89,7 @@ def getVerificationIG():
         db.session.commit() 
     
         return ('200')
-'''
-@app.route('/instagram', methods = ['POST'])
-def pushData():
-    data = request.data
-    theObject = received_data['object']
-    theEntry = received_data['entry']
-    received_updates.append(data)
 
-    db.session.add(theObject, theEntry)
-    db.session.commit() 
-    
-    return ('All Good')
-'''
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
