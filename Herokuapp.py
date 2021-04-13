@@ -1,4 +1,4 @@
-from flask import Flask, request,  jsonify, abort
+from flask import Flask, request,  jsonify, abort, render_template
 from flask_restful import reqparse
 import os, json
 from flask_sqlalchemy import SQLAlchemy
@@ -37,6 +37,7 @@ received_updates = []
 @app.route('/', methods = ['GET'])
 def home():
     return str(received_updates) #STRINGIFY?
+    #return (render_template('show_all.html', storyInsights = storyInsights.query.all()))
 
 # ------------------------LINES 28 /37 
 @app.route('/facebook', methods = ['GET'])
@@ -73,14 +74,14 @@ def getVerificationIG():
 
     if request.method == 'POST':
         data = request.json
-        theObject = data['object']
-        theEntry = data['entry'].apply(json.dumps)
-        senddtoDatabase = storyInsights(theObject, theEntry)
-        received_updates.append(theObject) 
+        #theObject = data['object']
+        #theEntry = data['entry'].apply(json.dumps) #SQL doesnt't accept dict -MUST CONVERT (with everything after the dot bug on sqlalchemy side /with error 500)
+        #senddtoDatabase = storyInsights(theObject, theEntry)
+        received_updates.append(data) 
         
 
-        db.session.add(sendtoDatabase)
-        db.session.commit() 
+        #db.session.add(theObject)
+        #db.session.commit() 
     
         return ('200')
 '''
