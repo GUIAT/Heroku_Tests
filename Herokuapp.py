@@ -11,10 +11,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE1_URL','sqlite:/
 
 db = SQLAlchemy(app)
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
 class storyInsights(db.Model):
 
     __tablename__="story_insights"
@@ -27,6 +23,9 @@ class storyInsights(db.Model):
         self.responseJsonEntry = responseJsonEntry
     
 
+@app.before_first_request
+def create_tables():
+    db.create_all()
 # ------------------------LINES 9 /18 == ?
 
 # ------------------------LINES 20 /21 == OK ?
