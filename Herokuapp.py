@@ -77,13 +77,12 @@ def getVerificationIG():
         data = request.get_json()
 
         responseJsonObject = data['object']
-        #responseJsonEntry = data['entry'] #SQL doesnt't accept dict -MUST CONVERT (with everything after the dot bug on sqlalchemy side /with error 500)
+        responseJsonEntry = data['entry'] #SQL doesnt't accept dict -MUST CONVERT (with everything after the dot bug on sqlalchemy side /with error 500)
         
-        #print(responseJsonEntry)
-        #senddtoDatabase = storyInsights(theObject, theEntry)
-        received_updates.append(responseJsonObject) 
+        sendtoDatabase = storyInsights(str(responseJsonObject), str(responseJsonEntry))
+        received_updates.append(sendtoDatabase) 
         
-        #db.session.add(theObject)
+        #db.session.add(senddtoDatabase)
         #db.session.commit() 
     
         return ('200')
