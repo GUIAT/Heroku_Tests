@@ -83,7 +83,7 @@ def getVerificationIG():
         
         received_updates.append(responseJsonEntry) 
 
-        sendtoDatabase = storyInsights(responseJsonEntry) #responseJsonObject,
+        sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry) #responseJsonObject,
          
         db.session.add(sendtoDatabase)
         db.session.commit() 
