@@ -37,7 +37,7 @@ received_updates = []
 @app.route('/', methods = ['GET'])
 def home():
     #return str(received_updates) #STRINGIFY?
-    return (render_template('show_all.html', storyInsights = storyInsights.query.all()))
+    return (str(storyInsights.query.all()))
 
 # ------------------------LINES 28 /37 
 @app.route('/facebook', methods = ['GET'])
