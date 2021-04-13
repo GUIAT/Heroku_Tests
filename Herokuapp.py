@@ -17,12 +17,12 @@ def create_tables():
 
 class storyInsights(db.Model):
     id = db.Column('Index_Id', db.Integer, primary_key = True)
-    theObject = db.Column(db.String(500))
-    theEntry = db.Column(db.String(500))
+    responseJsonObject = db.Column(db.String(30))
+    responseJsonEntry = db.Column(db.String(500))
     
-    def __init__(self, theObject, theEntry):
-        self.theObject = theObject
-        self.theEntry = theEntry
+    def __init__(self, responseJsonObject, responseJsonEntry):
+        self.responseJsonObject = responseJsonObject
+        self.responseJsonEntry = responseJsonEntry
     
 
 # ------------------------LINES 9 /18 == ?
@@ -52,7 +52,7 @@ def getVerificationFB():
     if received_data['hub.mode'] == 'subscribe' and received_data['hub.verify_token'] == token :
         return (str(received_data['hub.challenge']))
 
-    return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
+    return ('All Good')
 
 @app.route('/instagram', methods = ['GET', 'POST'])
 def getVerificationIG():
@@ -74,9 +74,11 @@ def getVerificationIG():
 
     if request.method == 'POST':
         data = request.json
-        #theObject = data['object']
-        #theEntry = data['entry'].apply(json.dumps) #SQL doesnt't accept dict -MUST CONVERT (with everything after the dot bug on sqlalchemy side /with error 500)
-        #senddtoDatabase = storyInsights(theObject, theEntry)
+        #responseJsonObject = data['object']
+        #responseJsonEntry = data['entry'] #SQL doesnt't accept dict -MUST CONVERT (with everything after the dot bug on sqlalchemy side /with error 500)
+        
+        #print(responseJsonEntry)
+        senddtoDatabase = storyInsights(theObject, theEntry)
         received_updates.append(data) 
         
 
