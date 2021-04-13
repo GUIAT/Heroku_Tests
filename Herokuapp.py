@@ -40,7 +40,7 @@ received_updates = []
 def home():
     #return str(received_updates) #STRINGIFY?
     #data = str(StoryInsights.query.all
-    return (str(storyInsights.query.all()))
+    return (str(received_updates))
 
 # ------------------------LINES 28 /37 
 @app.route('/facebook', methods = ['GET'])
@@ -83,8 +83,8 @@ def getVerificationIG():
         
         received_updates.append(responseJsonEntry) 
 
-        sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry)
-        
+        sendtoDatabase = storyInsights(responseJsonEntry) #responseJsonObject,
+         
         db.session.add(sendtoDatabase)
         db.session.commit() 
     
