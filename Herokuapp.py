@@ -80,7 +80,7 @@ def getVerificationIG():
         responseJsonObject = str(data['object'])
         responseJsonEntry = str(data['entry']["changes"])
         
-        received_updates.append(responseJsonEntry) 
+        received_updates.append(data) 
 
         #sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry) 
          
