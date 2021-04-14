@@ -90,7 +90,6 @@ def getVerificationIG():
 
         return (str(received_data['hub.mode'])+' '+str(received_data['hub.verify_token'])+' '+str(received_data['hub.challenge']))
 
-
     if request.method == 'POST':
         data = request.get_json()
 
