@@ -78,14 +78,14 @@ def getVerificationIG():
         data = request.get_json()
 
         responseJsonObject = str(data['object'])
-        responseJsonEntry = str(data['entry'])
+        responseJsonEntry = str(data['entry']["changes"])
         
         received_updates.append(responseJsonEntry) 
 
-        sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry) 
+        #sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry) 
          
-        db.session.add(sendtoDatabase)
-        db.session.commit() 
+        #db.session.add(sendtoDatabase)
+        #db.session.commit() 
     
         return ('200')
 
