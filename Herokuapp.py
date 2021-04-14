@@ -94,36 +94,36 @@ def getVerificationIG():
     if request.method == 'POST':
         data = request.get_json()
 
-        responseJsonObject = str(data['object'])
-        responseJsonEntry = str(data['entry'])
+        responseJsonObject = data['object']
+        responseJsonEntry = data['entry']
         for firstNestKey in responseJsonEntry:
-            responseJsonId = str(firstNestKey['id'])
-            responseJsonTime = str(datetime.datetime.fromtimestamp(firstNestKey['time']))
-            responseJsonChanges = str(firstNestKey['changes'])
+            responseJsonId = firstNestKey['id']
+            responseJsonTime = datetime.datetime.fromtimestamp(firstNestKey['time'])
+            responseJsonChanges = firstNestKey['changes']
             for secondNestKey in responseJsonChanges:
-                responseJsonField = str(secondNestKey['field'])
-                responseJsonValue = str(secondNestKey['value'])
-                responseJsonMediaId = str(secondNestKey['value']['media_id'])
-                responseJsonImpressions = str(secondNestKey['value']['impressions'])
-                responseJsonReach = str(secondNestKey['value']['reach'])
-                responseJsonForward = str(secondNestKey['value']['taps_forward'])
-                responseJsonBack = str(secondNestKey['value']['taps_back'])
-                responseJsonExits = str(secondNestKey['value']['exits'])
-                responseJsonReplies = str(secondNestKey['value']['replies'])
+                responseJsonField = secondNestKey['field']
+                responseJsonValue = secondNestKey['value']
+                responseJsonMediaId = secondNestKey['value']['media_id']
+                responseJsonImpressions = secondNestKey['value']['impressions']
+                responseJsonReach = secondNestKey['value']['reach']
+                responseJsonForward = secondNestKey['value']['taps_forward']
+                responseJsonBack = secondNestKey['value']['taps_back']
+                responseJsonExits = secondNestKey['value']['exits']
+                responseJsonReplies = secondNestKey['value']['replies']
                 
         received_updates.append(data)
 
-        sendtoDatabase = storyInsights(responseJsonObject, \
-                                        responseJsonId, \
-                                        responseJsonTime, \
-                                        responseJsonField, \
-                                        responseJsonMediaId, \
-                                        responseJsonImpressions, \
-                                        responseJsonReach, \
-                                        responseJsonForward, \
-                                        responseJsonBack, \
-                                        responseJsonExits, \
-                                        responseJsonReplies) 
+        sendtoDatabase = storyInsights(str(responseJsonObject), \
+                                        str(responseJsonId), \
+                                        str(responseJsonTime), \
+                                        str(responseJsonField), \
+                                        str(responseJsonMediaId), \
+                                        str(responseJsonImpressions), \
+                                        str(responseJsonReach), \
+                                        str(responseJsonForward), \
+                                        str(responseJsonBack), \
+                                        str(responseJsonExits), \
+                                        str(responseJsonReplies))
         db.session.add(sendtoDatabase)
         db.session.commit() 
     
