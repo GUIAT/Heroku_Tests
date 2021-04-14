@@ -15,17 +15,17 @@ class storyInsights(db.Model):
 
     __tablename__="story_insights"
     id = db.Column(db.Integer, primary_key = True)
-    plataforma = db.Column(db.String(30))
-    idCliente = db.Column(db.String(30))
-    timeStamp = db.Column(db.String(30))
-    field = db.Column(db.String(10))
-    idMedia = db.Column(db.String(30))
-    impressoes = db.Column(db.String(10))
-    alcance = db.Column(db.String(10))
-    forward = db.Column(db.String(10))
-    back = db.Column(db.String(10))
-    exits = db.Column(db.String(10))
-    replies = db.Column(db.String(10))
+    plataforma = db.Column(db.String(50))
+    idCliente = db.Column(db.String(50))
+    timeStamp = db.Column(db.String(50))
+    field = db.Column(db.String(50))
+    idMedia = db.Column(db.String(50))
+    impressoes = db.Column(db.String(50))
+    alcance = db.Column(db.String(50))
+    forward = db.Column(db.String(50))
+    back = db.Column(db.String(50))
+    exits = db.Column(db.String(50))
+    replies = db.Column(db.String(50))
     
     def __init__(self, plataforma, idCliente, timeStamp, field, idMedia, impressoes, alcance, forward, back, exits, replies ): 
         self.plataforma = plataforma
