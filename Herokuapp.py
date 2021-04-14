@@ -78,7 +78,7 @@ def getVerificationIG():
         data = request.get_json()
 
         responseJsonObject = str(data['object'])
-        responseJsonEntry = str(data['entry']["changes"])
+        responseJsonEntry = str(data['entry'])
         
         received_updates.append(data) 
 
