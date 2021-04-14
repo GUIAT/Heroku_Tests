@@ -1,6 +1,6 @@
 from flask import Flask, request,  jsonify, abort, render_template
 from flask_restful import reqparse
-import os, json
+import os, json, datetime
 from flask_sqlalchemy import SQLAlchemy
 #import hmac
 #from hashlib import sha1
@@ -15,13 +15,30 @@ class storyInsights(db.Model):
 
     __tablename__="story_insights"
     id = db.Column(db.Integer, primary_key = True)
-    responseJsonObject = db.Column(db.String(30))
-    responseJsonEntry = db.Column(db.String(500))
+    plataforma = db.Column(db.String(30))
+    idCliente = db.Column(db.String(30))
+    timeStamp = db.Column(db.String(30))
+    field = db.Column(db.String(10))
+    idMedia = db.Column(db.String(30))
+    impressoes = db.Column(db.String(10))
+    alcance = db.Column(db.String(10))
+    forward = db.Column(db.String(10))
+    back = db.Column(db.String(10))
+    exits = db.Column(db.String(10))
+    replies = db.Column(db.String(10))
     
-    def __init__(self, responseJsonObject,responseJsonEntry): 
-        self.responseJsonObject = responseJsonObject
-        self.responseJsonEntry = responseJsonEntry
-    
+    def __init__(self, plataforma, idCliente, timeStamp, field, idMedia, impressoes, alcance, forward, back, exits, replies ): 
+        self.plataforma = plataforma
+        self.idCliente = idCliente
+        self.timeStamp = timeStamp
+        self.field = field
+        self.idMedia = idMedia
+        self.impressoes = impressoes
+        self.alcance = alcance
+        self.forward = forward
+        self.back = back
+        self.exits = exits
+        self.replies = replies
 
 @app.before_first_request
 def create_tables():
@@ -79,13 +96,36 @@ def getVerificationIG():
 
         responseJsonObject = str(data['object'])
         responseJsonEntry = str(data['entry'])
-        
-        received_updates.append(data) 
+        for firstNestKey in responseJsonEntry:
+            responseJsonId = str(firstNestKey['id'])
+            responseJsonTime = str(datetime.datetime.fromtimestamp(firstNestKey['time']))
+            responseJsonChanges = str(firstNestKey['changes'])
+            for secondNestKey in responseJsonChanges:
+                responseJsonField = str(secondNestKey['field'])
+                responseJsonValue = str(secondNestKey['value'])
+                responseJsonMediaId = str(secondNestKey['value']['media_id'])
+                responseJsonImpressions = str(secondNestKey['value']['impressions'])
+                responseJsonReach = str(secondNestKey['value']['reach'])
+                responseJsonForward = str(secondNestKey['value']['taps_forward'])
+                responseJsonBack = str(secondNestKey['value']['taps_back'])
+                responseJsonExits = str(secondNestKey['value']['exits'])
+                responseJsonReplies = str(secondNestKey['value']['replies'])
+                
+        received_updates.append(data)
 
-        #sendtoDatabase = storyInsights(responseJsonObject, responseJsonEntry) 
-         
-        #db.session.add(sendtoDatabase)
-        #db.session.commit() 
+        sendtoDatabase = storyInsights(responseJsonObject, \
+                                        responseJsonId, \
+                                        responseJsonTime, \
+                                        responseJsonField, \
+                                        responseJsonMediaId, \
+                                        responseJsonImpressions, \
+                                        responseJsonReach, \
+                                        responseJsonForward, \
+                                        responseJsonBack, \
+                                        responseJsonExits, \
+                                        responseJsonReplies) 
+        db.session.add(sendtoDatabase)
+        db.session.commit() 
     
         return ('200')
 
